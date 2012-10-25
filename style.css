@@ -1,0 +1,74 @@
+body {
+  background: #4f9bff;
+  color: #5a5a5a;
+  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0; }
+
+a {
+  color: #5a5a5a;
+  text-decoration: none; }
+a:hover {
+  font-weight: bold; }
+a img {
+  border: none;
+  padding: 0;
+  margin: 0; }
+
+#wrapper {
+  width: 40em;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5em; }
+
+#logo {
+  z-index: 0; }
+  #logo h1 {
+    font-size: 4em;
+    font-weight: bold;
+    letter-spacing: -0.1em;
+    color: #e87830; }
+  #logo h2 {
+    font-size: 3em;
+    font-weight: bold;
+    margin-left: 2.9em;
+    margin-top: -0.5em; }
+
+#ascii-logo {
+  margin-top: -5em;
+  margin-left: -0.65em; }
+  #ascii-logo pre {
+    font-family: courier,fixed;
+    /*font-size: 1.1em;*/
+    font-size: 2em;
+    z-index: -1;
+    position: relative; }
+  #ascii-logo span.vline {
+    color: #4f90f1; }
+  #ascii-logo span.hline {
+    color: #4f90f1; }
+  #ascii-logo span.curve {
+    color: #CC0000;
+    font-weight: bold; }
+  #ascii-logo span.digit {
+    color: #e87830; }
+  #ascii-logo span.invisible {
+    display: none; }
+
+#sidebar {
+  position: relative;
+  top: -6.5em;
+  margin-left: 4.5em;
+  float: left;
+  font-size: 1.3em; }
+  #sidebar ul {
+    letter-spacing: -2pt;
+    list-style: none; }
+    #sidebar ul a:hover {
+      letter-spacing: 2.5pt; }
+
+#content {
+  width: 620px;
+  float: right;
+  padding: 0 0 30px 0;
+  min-height: 420px; }
