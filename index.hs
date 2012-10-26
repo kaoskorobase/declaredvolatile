@@ -17,7 +17,7 @@ index = do
             H.title "declared volatile"
             link ! rel "stylesheet" ! href "reset.css" ! type_ "text/css" ! media "screen"
             link ! rel "stylesheet" ! href "style.css" ! type_ "text/css" ! media "screen"
-            meta ! name "description" ! content "Stefan Kersten's personal page"
+            meta ! name "description" ! content "Born human, declared volatile"
             meta ! name "keywords" ! content "stefan kersten kaos korobase sex drugs rock'n roll"
             meta ! name "robots" ! content "all"
             link ! rel "index" ! A.title "declared volatile" ! href "/"
