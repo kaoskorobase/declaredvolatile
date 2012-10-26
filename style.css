@@ -43,6 +43,8 @@ a img {
     font-size: 2em;
     z-index: -1;
     position: relative; }
+  #ascii-logo span.axis {
+    color: #4f90f1; }
   #ascii-logo span.vline {
     color: #4f90f1; }
   #ascii-logo span.hline {
@@ -57,7 +59,7 @@ a img {
 
 #sidebar {
   position: relative;
-  top: -6.5em;
+  top: -5em;
   margin-left: 4.5em;
   float: left;
   font-size: 1.3em; }
