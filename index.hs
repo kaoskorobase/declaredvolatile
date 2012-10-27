@@ -102,7 +102,6 @@ styles = [lucius|
     float: left;
     font-size: 1.3em;
     ul {
-      letter-spacing: -2pt;
       list-style: none; }
       ul a:hover {
         letter-spacing: 2.5pt; } }
