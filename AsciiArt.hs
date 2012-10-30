@@ -8,33 +8,39 @@ import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
 import           Text.Blaze.Html.Renderer.String (renderHtml)
 
-data Pixel = Transparent | Pixel (Char -> Html) !Char
+data Pixel a = Transparent | Pixel a
+               deriving (Show)
 
-instance ToMarkup Pixel where
-  toMarkup Transparent = toMarkup ' '
-  toMarkup (Pixel f c) = f c
+instance Functor Pixel where
+  fmap _ Transparent = Transparent
+  fmap f (Pixel a)   = Pixel (f a)
 
-pixel :: (Char -> Html) -> Char -> Pixel
-pixel _ ' ' = Transparent
-pixel f c   = Pixel f c
+space :: Html
+space = toMarkup ' '
 
-type Layer = [[Pixel]]
+instance ToMarkup a => ToMarkup (Pixel a) where
+  toMarkup Transparent = space
+  toMarkup (Pixel a)   = toMarkup a
 
-layer :: (Char -> Html) -> [[Char]] -> Layer
-layer f = fmap (fmap (pixel f))
+pixel :: Char -> Pixel Char
+pixel ' ' = Transparent
+pixel m   = Pixel m
 
-newtype Image = Image { layers :: [Layer] }
+newtype Image a = Image { pixels :: [[Pixel a]] }
+                  deriving (Show)
 
-image :: [Layer] -> Image
-image = Image
+image :: [[Char]] -> Image Char
+image = Image . fmap (fmap pixel)
 
-instance ToMarkup Image where
+instance Functor Image where
+  fmap f = Image . fmap (fmap (fmap f)) . pixels
+
+instance ToMarkup a => ToMarkup (Image a) where
   toMarkup = H.pre
            . H.preEscapedToHtml
            . unlines
            . fmap (renderHtml . H.toHtml . fmap H.toHtml)
-           . L.foldl' below []
-           . layers
+           . pixels
 
 ofClass :: H.AttributeValue -> Char -> Html
 ofClass c t = H.span ! A.class_ c $ (H.toHtml t)
@@ -52,7 +58,7 @@ imageString = [
   , "    |                               "
   ]
 
-axes = layer (ofClass "axis") [
+axes = fmap (ofClass "axis") $ image [
     "                                    "   
   , "    |                               "
   , "    |                               "
@@ -65,7 +71,7 @@ axes = layer (ofClass "axis") [
   , "    |                               "
   ]
 
-sine = layer (ofClass "curve") [
+sine = fmap (ofClass "curve") $ image [
     "                                    "
   , "                                    "
   , "                                    "
@@ -78,7 +84,7 @@ sine = layer (ofClass "curve") [
   , "                                    "
   ]
 
-bits = layer (ofClass "digit") [
+bits = fmap (ofClass "digit") $ image [
     "                                    "
   , "                                    "
   , "                                    "
@@ -91,29 +97,28 @@ bits = layer (ofClass "digit") [
   , "                                    "
   ]
 
-logo = image [axes, sine, bits]
+logo :: Image Html
+logo = axes `below` sine `below` bits
 
 --prop_identity1 = unlines image == (unlines $ bits `above` sine `above` axes)
 --prop_identity2 = unlines image == (unlines $ axes `below` sine `below` bits)
 
---transparent :: Char
---transparent = ' '
-
-isTransparent :: Pixel -> Bool
+isTransparent :: Pixel a -> Bool
 isTransparent Transparent = True
 isTransparent _ = False
 
-combine :: [Pixel] -> [Pixel] -> [Pixel]
+combine :: [Pixel a] -> [Pixel a] -> [Pixel a]
 combine as [] = as
 combine [] bs = bs
 combine (a:as) (b:bs)
   | isTransparent a = b : combine as bs
   | otherwise = a : combine as bs
 
-above :: Layer -> Layer -> Layer
-above as [] = as
-above [] bs = bs
-above (a:as) (b:bs) = combine a b : above as bs
+above :: Image a -> Image a -> Image a
+above (Image as) (Image bs) = Image $ go as bs
+  where go as [] = as
+        go [] bs = bs
+        go (a:as) (b:bs) = combine a b : go as bs
 
-below :: Layer -> Layer -> Layer
+below :: Image a -> Image a -> Image a
 below a b = above b a
