@@ -46,10 +46,19 @@ index = [shamlet|
               <!-- <a href="http://www.linkedin.com/pub/stefan-kersten/19/91b/194">linked-in -->
 |]
 
+-- backgroundImage :: String
+-- backgroundImage = "free-paper-texture-47.jpg"
+-- backgroundImage = "free-paper-texture-38.jpg"
+
 styles :: Css
 styles = [lucius|
   body {
-    background: #4f9bff;
+    background-color: #4f9bff;
+    /*background-image:url(#{backgroundImage});*/
+    /*background-repeat: repeat-y;*/
+    /*background-position: center;*/
+    /*background-attachment: fixed;*/
+    /*background-size: 45em;*/
     color: #5a5a5a;
     font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
     margin: 0;
@@ -109,6 +118,7 @@ styles = [lucius|
     float: left;
     margin-left: 18em;
     font-size: 1.5em;
+    line-height: 1.25em;
     ul {
       list-style: none; }
     }
