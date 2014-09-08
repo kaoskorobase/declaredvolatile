@@ -78,7 +78,7 @@ styles = [lucius|
     h1 {
       font-size: 4em;
       font-weight: bold;
-      letter-spacing: -0.1em;
+      letter-spacing: -0.05em;
       color: #e87830; }
     h2 {
       font-size: 3em;
