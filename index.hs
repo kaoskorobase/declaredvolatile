@@ -3,11 +3,17 @@
 
 import qualified Data.Text.Lazy.IO as TL
 import           Text.Blaze.Html (Html)
+import qualified Text.Blaze.Html as H
 import           Text.Blaze.Html.Renderer.Text (renderHtml)
 import           Text.Hamlet (shamlet)
 import           Text.Lucius (Css, lucius, renderCss)
 
-import AsciiArt
+import AsciiArt (logo)
+import Rot13 (rot13)
+
+encodeLink :: String -> String -> H.Markup
+encodeLink name href = H.preEscapedToHtml $ "<script>document.write(" ++ show (map rot13 link) ++ ".replace(/[a-zA-Z]/g,function(c){return String.fromCharCode((c<=\"Z\"?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26);}));</script>"
+  where link = "<a href=\"" ++ href ++ "\">" ++ name ++ "</a>"
 
 index :: Html
 index = [shamlet|
@@ -32,12 +38,12 @@ index = [shamlet|
         <div #sidebar>
           <ul>
             <li>
-              <script>document.write("<n uers=\"znvygb:fx@x-ubeam.qr\">rznvy</n>".replace(/[a-zA-Z]/g,function(c){return String.fromCharCode((c<="Z"?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26);}));
-            <li><a href="files/sk.pub.asc">pubkey
-            <li><a href="http://twitter.com/kaoskorobase">twitter
-            <li><a href="http://www.linkedin.com/pub/stefan-kersten/19/91b/194">linked-in
-            <li><a href="https://plus.google.com/116882574218560793137">google+
-            <li><a href="https://github.com/kaoskorobase">github
+              <a href="http://kaoskorobase.roughdraft.io/">blog</a>
+              #{encodeLink "email" "mailto:kaoskorobase@gmail.com"}
+              <a href="https://github.com/kaoskorobase">github
+              <a href="files/sk.pub.asc">pubkey
+              <a href="http://twitter.com/kaoskorobase">twitter</a>
+              <!-- <a href="http://www.linkedin.com/pub/stefan-kersten/19/91b/194">linked-in -->
 |]
 
 styles :: Css
@@ -57,7 +63,9 @@ styles = [lucius|
       padding: 0;
       margin: 0; } }
   a:hover {
-    font-weight: bold; }
+    /*font-weight: bold;*/
+    color: #e87830;
+    }
 
   #wrapper {
     width: 40em;
@@ -97,14 +105,13 @@ styles = [lucius|
 
   #sidebar {
     position: relative;
-    top: -5em;
-    margin-left: 4.5em;
+    top: -4em;
     float: left;
-    font-size: 1.3em;
+    margin-left: 18em;
+    font-size: 1.5em;
     ul {
       list-style: none; }
-      ul a:hover {
-        letter-spacing: 2.5pt; } }
+    }
 
   #content {
     width: 620px;
