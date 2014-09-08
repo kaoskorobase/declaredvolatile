@@ -3,5 +3,5 @@ index.html: index.hs AsciiArt.hs
 
 .PHONY: deploy
 deploy:
-	sh -x deploy.sh
+	test -x deploy.sh && sh -x deploy.sh || true
 
