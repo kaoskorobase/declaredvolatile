@@ -82,7 +82,7 @@ styles = [lucius|
     margin-top: -5em;
     margin-left: -0.65em;
     pre {
-      font-family: courier,fixed;
+      font-family: monospace,fixed;
       /*font-size: 1.1em;*/
       font-size: 2em;
       z-index: -1;
