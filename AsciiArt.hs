@@ -36,13 +36,12 @@ instance Functor Image where
   fmap f = Image . fmap (fmap (fmap f)) . pixels
 
 instance ToMarkup a => ToMarkup (Image a) where
-  toMarkup = H.pre
-           . H.preEscapedToHtml
+  toMarkup = H.preEscapedToHtml
            . unlines
            . fmap (renderHtml . H.toHtml . fmap H.toHtml)
            . pixels
 
-ofClass :: H.AttributeValue -> Char -> Html
+ofClass :: H.ToMarkup a => H.AttributeValue -> a -> Html
 ofClass c t = H.span ! A.class_ c $ (H.toHtml t)
 
 imageString = [
@@ -84,6 +83,19 @@ sine = fmap (ofClass "curve") $ image [
   , "                                    "
   ]
 
+sineLink = fmap ((\c -> H.a ! A.href "sine.txt" $ (H.toHtml c)) . ofClass "curve") $ image [
+    "                                    "
+  , "                                    "
+  , "                                    "
+  , "                                    "
+  , "                                    "
+  , "                                    "
+  , "    +                               "
+  , "                                    "
+  , "                                    "
+  , "                                    "
+  ]
+
 bits = fmap (ofClass "digit") $ image [
     "                                    "
   , "                                    "
@@ -98,7 +110,7 @@ bits = fmap (ofClass "digit") $ image [
   ]
 
 logo :: Image Html
-logo = axes `below` sine `below` bits
+logo = axes `below` sineLink `below` sine `below` bits
 
 --prop_identity1 = unlines image == (unlines $ bits `above` sine `above` axes)
 --prop_identity2 = unlines image == (unlines $ axes `below` sine `below` bits)

@@ -1,134 +1,218 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE QuasiQuotes #-}
 
-import qualified Data.Text.Lazy.IO as TL
+module Index (index, post, BlogPost(..)) where
+
+import           Development.Shake.FilePath
 import           Text.Blaze.Html (Html)
 import qualified Text.Blaze.Html as H
 import           Text.Blaze.Html.Renderer.Text (renderHtml)
 import           Text.Hamlet (shamlet)
 import           Text.Lucius (Css, lucius, renderCss)
 
-import AsciiArt (logo)
-import Rot13 (rot13)
+import qualified AsciiArt
+import           Rot13 (rot13)
 
 encodeLink :: String -> String -> H.Markup
-encodeLink name href = H.preEscapedToHtml $ "<script>document.write(" ++ show (map rot13 link) ++ ".replace(/[a-zA-Z]/g,function(c){return String.fromCharCode((c<=\"Z\"?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26);}));</script>"
-  where link = "<a href=\"" ++ href ++ "\">" ++ name ++ "</a>"
+encodeLink name href = H.preEscapedToHtml $
+    "<script>document.write("
+      ++ show (map rot13 ("<a href=\"" ++ href ++ "\">" ++ name ++ "</a>"))
+      ++ ".replace(/[a-zA-Z]/g,function(c){return String.fromCharCode((c<=\"Z\"?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26);}));"
+      ++ "</script>"
 
-index :: Html
-index = [shamlet|
+data BlogPost = BlogPost {
+    postTitle :: String
+  , postDate :: String
+  , postUrl :: String
+  , postBody :: Html
+  }
+
+layout :: String -> Html -> Html
+layout baseUrl content = [shamlet|
   $doctype 5
   <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>declared volatile
-        <link rel="stylesheet" href="reset.css" type="text/css" media="screen">
-        <style type="text/css">#{renderCss styles}
+        <link rel="stylesheet" href=#{baseUrl </> "css/reset.css"} type="text/css" media="screen">
+        <link rel="stylesheet" href=#{baseUrl </> "css/basscss.css"} type="text/css" media="screen">
+        <link rel="stylesheet" href=#{baseUrl </> "css/pixyll.css"} type="text/css" media="screen">
+        <link rel="stylesheet" href=#{baseUrl </> "css/styles.css"} type="text/css" media="screen">
+        <style type="text/css">#{renderCss logoStyles}
+        <link rel="stylesheet" href=#{baseUrl </> "css/pandoc-solarized.css"} type="text/css" media="screen">
         <meta name="description" content="Born human, declared volatile">
         <meta name="keywords" content="stefan kersten kaos korobase sex drugs rock'n roll">
         <meta name="robots" content="all">
         <link rel="index" title="declared volatile" href="/">
+        <link href="blog/feed.xml" type="application/atom+xml" rel="alternate" title="Declared Volatile ATOM Feed" />
   <body>
-      <div #wrapper>
-        <div #header>
-            <div #logo>
-                <h1>declared
-                <h2>volatile
-            <div #ascii-logo>#{logo}
-        <div #sidebar>
-          <ul>
-            <li>
-              <a href="http://kaoskorobase.roughdraft.io/">blog</a>
-              #{encodeLink "email" "mailto:kaoskorobase@gmail.com"}
-              <a href="https://github.com/kaoskorobase">github
-              <a href="files/sk.pub.asc">pubkey
-              <a href="http://twitter.com/kaoskorobase">twitter</a>
-              <!-- <a href="http://www.linkedin.com/pub/stefan-kersten/19/91b/194">linked-in -->
+    <div .container>
+      <div .row>
+        <div .col .col-1>
+          &nbsp;
+        <div .col .col-6>
+          <header>
+            <div .mt2 .wrap>
+              <div .measure>
+                #{logo baseUrl}
+                <div .clearfix>
+      <div .row>
+        <div .col-center .col-8>
+          #{content}
+          <!-- <footer> -->
+            <div .p1 .wrap>
+              <div .measure .center>
+                <small>
+                  <hr>
+                  Powered by <a href="https://github.com/johnotander/pixyll.git">Pixyll</a>
+|]
+
+index :: String -> [BlogPost] -> Html
+index baseUrl posts = layout baseUrl $ [shamlet|
+  <div .home>
+    <div .posts>
+      $forall post <- posts
+        <div .post>
+          <p .post-meta>#{postDate post}
+          <a href="#{baseUrl </> postUrl post}" .post-link>
+            <h3 .h2 .post-title>#{postTitle post}
+          <!-- <p .post-summary>post.summary -->
+|]
+
+post :: String -> BlogPost -> Html
+post baseUrl post = layout baseUrl $ [shamlet|
+  <div .post .px2 role="main">
+    <div .post-header .mb2>
+      <h1>#{postTitle post}
+      <span .post-meta>#{postDate post}
+    <article .post-content>
+      #{postBody post}
+      <p>Comments welcome! <a href="https://twitter.com/kaoskorobase">@kaoskorobase
+|]
+
+logo :: FilePath -> Html
+logo baseUrl = [shamlet|
+  <div #logo>
+    <div #logo-header>
+      <a href="#{baseUrl}">
+        <div #logo-header-1>declared
+        <div #logo-header-2>volatile
+    <div #logo-drawing>#{AsciiArt.logo}
+    <div #logo-menu>
+      <!-- <a href="http://kaoskorobase.roughdraft.io/">blog</a> -->
+      #{encodeLink "email" "mailto:kaoskorobase@gmail.com"}
+      <a href="#{baseUrl </> "files/sk.pub.asc"}">pubkey
+      <a href="http://twitter.com/kaoskorobase">twitter</a>
+      <a href="https://github.com/kaoskorobase">github
+      <a href="http://www.linkedin.com/pub/stefan-kersten/19/91b/194">linked-in
 |]
 
 -- backgroundImage :: String
 -- backgroundImage = "free-paper-texture-47.jpg"
 -- backgroundImage = "free-paper-texture-38.jpg"
 
-styles :: Css
-styles = [lucius|
-  body {
-    background-color: #4f9bff;
-    /*background-image:url(#{backgroundImage});*/
-    /*background-repeat: repeat-y;*/
-    /*background-position: center;*/
-    /*background-attachment: fixed;*/
-    /*background-size: 45em;*/
-    color: #5a5a5a;
-    font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
-    margin: 0;
-    padding: 0; }
+  -- body {
+  --   background-color: #4f9bff;
+  --   /*background-image:url(#{backgroundImage});*/
+  --   /*background-repeat: repeat-y;*/
+  --   /*background-position: center;*/
+  --   /*background-attachment: fixed;*/
+  --   /*background-size: 45em;*/
+  --   color: #5a5a5a;
+  --   font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+  --   margin: 0;
+  --   padding: 0; }
 
-  a {
-    color: #5a5a5a;
-    text-decoration: none;
-    img {
-      border: none;
-      padding: 0;
-      margin: 0; } }
-  a:hover {
-    /*font-weight: bold;*/
-    color: #e87830;
+logoStyles :: Css
+logoStyles = [lucius|
+
+  @media screen and (max-width: 43em) {
+    #logo {
+      font-size: 0.5em;
     }
+  }
 
-  #wrapper {
-    width: 40em;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 5em; }
+  @media screen and (min-width: 43em) {
+    #logo {
+      font-size: 0.75em;
+    }
+  }
 
   #logo {
+    position: relative;
+    /*top: 5em;*/
+    width: 43em;
+    /*margin: 0 auto;*/
+    /*margin-left: -6em;*/
+    min-height: 21.5em;
+    color: #5a5a5a;
+    font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    line-height: 1;
+    /*font-size: 0.8rem;*/
+    a {
+      color: #5a5a5a;
+      text-decoration: none;
+      img {
+        border: none;
+        padding: 0;
+        margin: 0;
+      }
+    }
+    a:hover {
+      /*font-weight: bold;*/
+      color: #e87830;
+    }
+  }
+
+  #logo-header {
     z-index: 0;
-    h1 {
+    #logo-header-1 {
+      position: absolute;
+      left: 0.7em;
       font-size: 4em;
       font-weight: bold;
       letter-spacing: -0.05em;
-      color: #e87830; }
-    h2 {
+      color: #e87830;
+    }
+    #logo-header-2 {
+      position:absolute;
       font-size: 3em;
       font-weight: bold;
-      margin-left: 2.9em;
-      margin-top: -0.5em; } }
+      left: 2.3em;
+      top: 0.85em;
+    }
+  }
 
-  #ascii-logo {
-    margin-top: -5em;
-    margin-left: -0.65em;
-    pre {
-      font-family: monospace,fixed;
-      /*font-size: 1.1em;*/
-      font-size: 2em;
-      z-index: -1;
-      position: relative; }
+  #logo-drawing {
+    position: absolute;
+    font-family: monospace,fixed;
+    /*font-size: 1.1em;*/
+    font-size: 2em;
+    z-index: -1;
+    white-space: pre;
     span.axis {
-      color: #4f90f1; }
+      color: #4f90f1;
+    }
     span.curve {
       color: #CC0000;
-      font-weight: bold; }
-    span.digit {
-      color: #e87830; } }
-
-  #sidebar {
-    position: relative;
-    top: -4em;
-    float: left;
-    margin-left: 18em;
-    font-size: 1.5em;
-    line-height: 1.25em;
-    ul {
-      list-style: none; }
+      font-weight: bold;
     }
+    span.digit {
+      color: #e87830;
+    }
+  }
 
-  #content {
-    width: 620px;
-    float: right;
-    padding: 0 0 30px 0;
-    min-height: 420px; }
-|] "/"
+  #logo-menu {
+    position: absolute;
+    top: 7em;
+    left: 13.5em;
+    ul {
+      list-style: none;
+    }
+    font-size: 2em;
+    line-height: 1.25em;
+  }
 
-main :: IO ()
-main = TL.putStrLn $ renderHtml index
+  .logo-menu-entry {
+  }
+|] undefined

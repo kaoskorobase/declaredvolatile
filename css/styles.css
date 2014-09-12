@@ -1,0 +1,43 @@
+@charset "UTF-8";
+
+body {
+  background-color: #4f9bff;
+}
+
+a {
+  color: #5a5a5a;
+  text-decoration: none;
+}
+a:hover {
+  color: #e87830;
+  text-decoration: none;
+}
+
+pre {
+  background-color: #A9CEFF;
+  border-radius: 10px;
+  overflow-x: auto;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  color: #478CE6;
+  background-color: #478CE6;
+}
+
+.posts {
+  margin-top: 2em;
+}
+
+.posts .post {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: thin solid #478CE6;
+}
+
+.posts .post:last-child {
+  border-bottom: none;
+  margin-bottom: .5rem;
+  padding-bottom: 0;
+}
