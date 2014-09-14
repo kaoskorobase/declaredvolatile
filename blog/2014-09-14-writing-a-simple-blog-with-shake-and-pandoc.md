@@ -136,7 +136,7 @@ build "atom.xml" *> \out -> do
         }
       feed = (nullFeed
                 "tag:declared-volatile.org"
-                (TextString "Declared Volatile Blog")
+                (TextString "Declared Volatile")
                 ( formatISO8601
                 . maximum
                 . map postLastModificationDate $ posts))

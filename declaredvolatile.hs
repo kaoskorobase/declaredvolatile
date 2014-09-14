@@ -68,7 +68,7 @@ main = shakeArgs shakeOptions { shakeFiles = "build/" } $ do
           , entryLinks = [nullLink $ "http://space.k-hornz.de/" ++ postUrl p]
           }
         feed = (nullFeed "tag:declared-volatile.org,2014"
-                        (TextString "Declared Volatile Blog")
+                        (TextString "Declared Volatile")
                         (formatISO8601 . maximum . map postLastModificationDate $ posts))
                 {
                   feedEntries = map mkEntry posts
