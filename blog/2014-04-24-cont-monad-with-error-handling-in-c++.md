@@ -1,4 +1,6 @@
-# Cont Monad with error handling in C++
+% Cont Monad with error handling in C++
+%
+% 2014-04-24
 
 So I've been looking at the new [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/Introduction/Introduction.html) API and imagining the tangled mess of delegate methods and completion blocks blurred my vision and made my head spin. After regaining my composure I remembered the wonderful world of Haskell monad transformer stacks and in particular I remembered two blog posts I came across some time ago ([1] and [2]) about restructuring nested callbacks with the Cont(inuation) monad. Digging further, I found an excellent [article][3] about the continuation monad in C++.
 

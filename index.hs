@@ -3,12 +3,16 @@
 
 module Index (index, post, BlogPost(..)) where
 
+import           Data.Time
+import           Data.Time.Format
 import           Development.Shake.FilePath
+import           System.Locale (defaultTimeLocale)
 import           Text.Blaze.Html (Html)
 import qualified Text.Blaze.Html as H
-import           Text.Blaze.Html.Renderer.Text (renderHtml)
+import           Text.Blaze.Html.Renderer.String (renderHtml)
 import           Text.Hamlet (shamlet)
 import           Text.Lucius (Css, lucius, renderCss)
+import           Text.Pandoc
 
 import qualified AsciiArt
 import           Rot13 (rot13)
@@ -22,10 +26,20 @@ encodeLink name href = H.preEscapedToHtml $
 
 data BlogPost = BlogPost {
     postTitle :: String
-  , postDate :: String
+  , postDate :: UTCTime
+  , postLastModificationDate :: UTCTime
   , postUrl :: String
-  , postBody :: Html
+  , postBody :: Pandoc
   }
+
+formatPostDate :: BlogPost -> String
+formatPostDate = formatTime defaultTimeLocale "%Y-%m-%d" . postDate
+
+postHtml :: BlogPost -> Html
+postHtml = writeHtml def { writerReferenceLinks = True
+                         , writerHtml5 = True
+                         , writerHighlight = True }
+         . postBody
 
 layout :: String -> Html -> Html
 layout baseUrl content = [shamlet|
@@ -34,17 +48,17 @@ layout baseUrl content = [shamlet|
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>declared volatile
-        <link rel="stylesheet" href=#{baseUrl </> "css/reset.css"} type="text/css" media="screen">
-        <link rel="stylesheet" href=#{baseUrl </> "css/basscss.css"} type="text/css" media="screen">
-        <link rel="stylesheet" href=#{baseUrl </> "css/pixyll.css"} type="text/css" media="screen">
-        <link rel="stylesheet" href=#{baseUrl </> "css/styles.css"} type="text/css" media="screen">
+        <link rel="stylesheet" href="#{baseUrl </> "css/reset.css"}" type="text/css" media="screen">
+        <link rel="stylesheet" href="#{baseUrl </> "css/basscss.css"}" type="text/css" media="screen">
+        <link rel="stylesheet" href="#{baseUrl </> "css/pixyll.css"}" type="text/css" media="screen">
+        <link rel="stylesheet" href="#{baseUrl </> "css/styles.css"}" type="text/css" media="screen">
         <style type="text/css">#{renderCss logoStyles}
         <link rel="stylesheet" href=#{baseUrl </> "css/pandoc-solarized.css"} type="text/css" media="screen">
         <meta name="description" content="Born human, declared volatile">
         <meta name="keywords" content="stefan kersten kaos korobase sex drugs rock'n roll">
         <meta name="robots" content="all">
         <link rel="index" title="declared volatile" href="/">
-        <link href="blog/feed.xml" type="application/atom+xml" rel="alternate" title="Declared Volatile ATOM Feed" />
+        <link href="#{baseUrl </> "atom.xml"}" type="application/atom+xml" rel="alternate" title="Declared Volatile ATOM Feed" />
   <body>
     <div .container>
       <div .row>
@@ -73,7 +87,7 @@ index baseUrl posts = layout baseUrl $ [shamlet|
     <div .posts>
       $forall post <- posts
         <div .post>
-          <p .post-meta>#{postDate post}
+          <p .post-meta>#{formatPostDate post}
           <a href="#{baseUrl </> postUrl post}" .post-link>
             <h3 .h2 .post-title>#{postTitle post}
           <!-- <p .post-summary>post.summary -->
@@ -84,9 +98,9 @@ post baseUrl post = layout baseUrl $ [shamlet|
   <div .post .px2 role="main">
     <div .post-header .mb2>
       <h1>#{postTitle post}
-      <span .post-meta>#{postDate post}
+      <span .post-meta>#{formatPostDate post}
     <article .post-content>
-      #{postBody post}
+      #{postHtml post}
       <p>Comments welcome! <a href="https://twitter.com/kaoskorobase">@kaoskorobase
 |]
 

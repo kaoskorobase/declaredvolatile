@@ -1,4 +1,6 @@
-# Building Tahoe-LAFS on Mac OSX 10.8.5
+% Building Tahoe-LAFS on Mac OSX 10.8.5
+%
+% 2013-09-08
 
 I've encountered two quirks when trying to build Tahoe-LAFS on Mac OSX 10.8.5 with XCode 5.5.1.
 
