@@ -2,7 +2,7 @@
 %
 % 2014-09-14
 
-I've been using the [Shake](https://hackage.haskell.org/package/shake) build framework a lot lately and instead of learning a new framework, such as [Hakyll](http://jaspervdj.be/hakyll/), I thought I'd write a simple static blog generator using Shake, [Shakespeare](https://hackage.haskell.org/package/shakespeare) templates and the [Pandoc](https://hackage.haskell.org/package/pandoc) Markdown converter.
+I've been using the [Shake](https://hackage.haskell.org/package/shake) build framework a lot lately, so instead of learning a new framework, such as [Hakyll](http://jaspervdj.be/hakyll/), I thought I'd write a simple static blog generator using Shake, [Shakespeare](https://hackage.haskell.org/package/shakespeare) templates and the [Pandoc](https://hackage.haskell.org/package/pandoc) Markdown converter.
 
 **TL;DR** If you already know how to use Shake or would like to learn it for other projects, a simple static blog site generator can be written in about 500 lines of code, including HTML and CSS templates.
 
