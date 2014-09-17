@@ -1,10 +1,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE QuasiQuotes #-}
 
-module Index (index, post, BlogPost(..)) where
+module Index (index, post) where
 
 import           Data.Time
 import           Data.Time.Format
+import           DeclaredVolatile.BlogPost
 import           Development.Shake.FilePath
 import           System.Locale (defaultTimeLocale)
 import           Text.Blaze.Html (Html)
@@ -23,23 +24,6 @@ encodeLink name href = H.preEscapedToHtml $
       ++ show (map rot13 ("<a href=\"" ++ href ++ "\">" ++ name ++ "</a>"))
       ++ ".replace(/[a-zA-Z]/g,function(c){return String.fromCharCode((c<=\"Z\"?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26);}));"
       ++ "</script>"
-
-data BlogPost = BlogPost {
-    postTitle :: String
-  , postDate :: UTCTime
-  , postLastModificationDate :: UTCTime
-  , postUrl :: String
-  , postBody :: Pandoc
-  }
-
-formatPostDate :: BlogPost -> String
-formatPostDate = formatTime defaultTimeLocale "%Y-%m-%d" . postDate
-
-postHtml :: BlogPost -> Html
-postHtml = writeHtml def { writerReferenceLinks = True
-                         , writerHtml5 = True
-                         , writerHighlight = True }
-         . postBody
 
 layout :: String -> Html -> Html
 layout baseUrl content = [shamlet|

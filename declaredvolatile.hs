@@ -5,6 +5,7 @@ import           Data.List
 import           Data.List.Split
 import           Data.Ord
 import           Data.Time.ISO8601
+import           DeclaredVolatile.BlogPost
 import           Development.Shake
 import           Development.Shake.FilePath
 import           Index
