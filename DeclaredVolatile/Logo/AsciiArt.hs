@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module AsciiArt where
+module DeclaredVolatile.Logo.AsciiArt where
 
 import qualified Data.List as L
 import           Text.Blaze (ToMarkup(..))

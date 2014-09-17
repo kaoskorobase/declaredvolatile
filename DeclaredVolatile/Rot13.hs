@@ -1,4 +1,4 @@
-module Rot13 (rot13) where
+module DeclaredVolatile.Rot13 (rot13) where
 
 import Data.Char
  

@@ -6,9 +6,9 @@ import           Data.List.Split
 import           Data.Ord
 import           Data.Time.ISO8601
 import           DeclaredVolatile.BlogPost
+import           DeclaredVolatile.Layout
 import           Development.Shake
 import           Development.Shake.FilePath
-import           Index
 import           Text.Atom.Feed
 import           Text.Atom.Feed.Export (xmlFeed)
 import           Text.Blaze.Html

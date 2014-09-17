@@ -15,8 +15,22 @@ cabal-version:       >=1.10
 
 executable declaredvolatile
   main-is:             declaredvolatile.hs
-  other-modules:       Index, AsciiArt
+  other-modules:       DeclaredVolatile.Layout
+                       DeclaredVolatile.Logo.AsciiArt
+                       DeclaredVolatile.Rot13
   other-extensions:    OverloadedStrings, EmptyDataDecls, NoImplicitPrelude
-  build-depends:       base >=4.7 && <4.8, blaze-markup >=0.6 && <0.7, blaze-html >=0.7 && <0.8, feed, shake >= 0.13, shakespeare >= 2.0, split, text >= 1.1, pandoc, xml, iso8601-time, time, old-locale
+  build-depends:       base >=4.7 && <4.8,
+                       blaze-markup >=0.6 && <0.7,
+                       blaze-html >=0.7 && <0.8,
+                       feed,
+                       iso8601-time,
+                       old-locale,
+                       pandoc,
+                       shake >= 0.13,
+                       shakespeare >= 2.0,
+                       split,
+                       text >= 1.1,
+                       time,
+                       xml
   -- hs-source-dirs:      
   default-language:    Haskell2010

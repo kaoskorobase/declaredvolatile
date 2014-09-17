@@ -1,11 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE QuasiQuotes #-}
 
-module Index (index, post) where
+module DeclaredVolatile.Layout (index, post) where
 
 import           Data.Time
 import           Data.Time.Format
 import           DeclaredVolatile.BlogPost
+import qualified DeclaredVolatile.Logo.AsciiArt as AsciiArt
+import           DeclaredVolatile.Rot13 (rot13)
 import           Development.Shake.FilePath
 import           System.Locale (defaultTimeLocale)
 import           Text.Blaze.Html (Html)
@@ -15,8 +17,6 @@ import           Text.Hamlet (shamlet)
 import           Text.Lucius (Css, lucius, renderCss)
 import           Text.Pandoc
 
-import qualified AsciiArt
-import           Rot13 (rot13)
 
 encodeLink :: String -> String -> H.Markup
 encodeLink name href = H.preEscapedToHtml $
