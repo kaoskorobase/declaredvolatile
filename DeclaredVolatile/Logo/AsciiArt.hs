@@ -83,19 +83,6 @@ sine = fmap (ofClass "curve") $ image [
   , "                                    "
   ]
 
-sineLink = fmap ((\c -> H.a ! A.href "sine.txt" $ (H.toHtml c)) . ofClass "curve") $ image [
-    "                                    "
-  , "                                    "
-  , "                                    "
-  , "                                    "
-  , "                                    "
-  , "                                    "
-  , "    +                               "
-  , "                                    "
-  , "                                    "
-  , "                                    "
-  ]
-
 bits = fmap (ofClass "digit") $ image [
     "                                    "
   , "                                    "
@@ -110,7 +97,7 @@ bits = fmap (ofClass "digit") $ image [
   ]
 
 logo :: Image Html
-logo = axes `below` sineLink `below` sine `below` bits
+logo = axes `below` sine `below` bits
 
 --prop_identity1 = unlines image == (unlines $ bits `above` sine `above` axes)
 --prop_identity2 = unlines image == (unlines $ axes `below` sine `below` bits)
