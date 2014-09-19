@@ -86,7 +86,7 @@ _footer = [shamlet|
   <div class="p2 wrap">
     <div class="measure mt1 center">
       <small>
-        <a href="https://github.com/johnotander/pixyll.git">Pixyll Theme</a>
+        Powered by <a href="https://github.com/kaoskorobase/declaredvolatile">Source Code</a> and the <a href="https://github.com/johnotander/pixyll.git">Pixyll Theme</a>.
 |]
 
 -- _pagination = [shamlet|
