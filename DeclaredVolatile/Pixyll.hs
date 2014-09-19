@@ -19,9 +19,9 @@ import qualified Text.Blaze.Html5 as H
 data Site = Site {
     siteTitle :: String
   , siteDescription :: String
-  , siteUrl :: String
   , siteBaseUrl :: String
   , siteAuthor :: String
+  , siteKeywords :: [String]
   , siteMenu :: [Html]
   }
 
@@ -38,18 +38,24 @@ _head site maybePage = [shamlet|
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title>
-    $maybe page <- maybePage
-      #{ pageTitle page } &#8211;
-    $nothing
-    #{ siteTitle site }
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- <meta name="description" content="{% if page.summary %}{{ page.summary }}{% else %}{{ site.description }}{% endif %}"> -->
+  $maybe page <- maybePage
+    <title>#{ pageTitle page } &#8211; #{ siteTitle site }
+    $if not (null (pageSummary page))
+      <meta name="description" content="#{ pageSummary page }">
+    $else
+      <meta name="description" content="#{ siteDescription site }">
+    <!-- {% if page.categories %}<meta name="keywords" content="{{ page.categories | join: ', ' }}">{% endif %} -->
+  $nothing
+    <title>#{ siteTitle site }
+    <meta name="description" content="#{ siteDescription site }">
+
   <meta name="author" content="#{ siteAuthor site }">
-  <!-- {% if page.categories %}<meta name="keywords" content="{{ page.categories | join: ', ' }}">{% endif %} -->
+  <meta name="keywords" content="#{ unwords (siteKeywords site) }">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"> -->
 
-  <!-- Custom CSS -->
+  <!-- CSS -->
   <link rel="stylesheet" href="#{ siteBaseUrl site }/css/basscss.css" type="text/css">
   <link rel="stylesheet" href="#{ siteBaseUrl site }/css/pixyll.css" type="text/css">
   <link rel="stylesheet" href="#{ siteBaseUrl site }/css/pandoc-solarized.css" type="text/css">
