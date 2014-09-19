@@ -15,7 +15,8 @@ cabal-version:       >=1.10
 
 executable declaredvolatile
   main-is:             declaredvolatile.hs
-  other-modules:       DeclaredVolatile.Layout
+  other-modules:       DeclaredVolatile.Html
+                       DeclaredVolatile.Layout
                        DeclaredVolatile.Logo.AsciiArt
                        DeclaredVolatile.Rot13
   other-extensions:    OverloadedStrings, EmptyDataDecls, NoImplicitPrelude
