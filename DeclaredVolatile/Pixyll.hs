@@ -61,14 +61,9 @@ _head site maybePage = [shamlet|
   <link href="http://fonts.googleapis.com/css?family=Lato:900,300" rel="stylesheet" type="text/css">
 |]
 
-title = fmap H.toHtml $ image [
-    "                                    "   
-  , "                                    "
-  , "declared volatile                   "
-  , "                                    "
-  , "                                    " ]
-
-headerLogo = crop (sine `below` bits) `below` title
+headerLogo = title `above` crop (sine `below` bits)
+  where
+    title = fmap H.toHtml $ translate 0 2 $ image [ "declared volatile" ]
 
 _header :: Site -> Html
 _header site = [shamlet|
