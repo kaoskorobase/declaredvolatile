@@ -1,7 +1,17 @@
 {-# LANGUAGE OverloadedStrings #-}
 module DeclaredVolatile.Logo.AsciiArt (
-  Image, image, above, below, translate, crop,
-  logo, axes, sine, bits
+    Image
+  , image
+  , width
+  , height
+  , above
+  , below
+  , translate
+  , crop
+  , logo
+  , axes
+  , sine
+  , bits
 ) where
 
 import qualified Data.List as L
