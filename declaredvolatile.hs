@@ -50,14 +50,18 @@ postToPage post = Pixyll.Page {
   , Pixyll.pageUrl = postUrl post
   }
 
+copy :: FilePath -> Rules ()
+copy pattern = "build" </> pattern *> \out -> copyFile' (dropDirectory1 out) out
+
 main :: IO ()
 main = shakeArgs shakeOptions { shakeFiles = "build/" } $ do
   let build = (</>) "build"
 
   phony "clean" $ removeFilesAfter "build" ["//*"]
 
-  build "css/*.css" *> \out ->
-    copyFile' (dropDirectory1 out) out
+  copy "LICENSE.txt"
+
+  copy "css/*.css"
 
   getPost <- newCache $ \path -> do
     pandoc@(Pandoc meta _) <- readMarkdown def <$> readFile' path
@@ -116,6 +120,7 @@ main = shakeArgs shakeOptions { shakeFiles = "build/" } $ do
            ++ css
            ++ map (combine "build" . flip combine "index.html" . postUrl) posts
            ++ [build "atom.xml"]
+           ++ [build "LICENSE.txt"]
     writeFile' out
       . renderHtml
       . Pixyll.index site

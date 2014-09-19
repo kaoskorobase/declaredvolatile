@@ -3,11 +3,11 @@ version:             0.1.0.0
 -- synopsis:            
 -- description:         
 homepage:            http://space.k-hornz.de
-license:             GPL-2
-license-file:        LICENSE
+license:             BSD-3
+license-file:        LICENSE.txt
 author:              Stefan Kersten
 maintainer:          kaoskorobase@gmail.com
--- copyright:           
+copyright:           (c) 2014 Stefan Kersten
 category:            Web
 build-type:          Simple
 -- extra-source-files:  
