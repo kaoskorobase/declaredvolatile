@@ -143,6 +143,8 @@ post site page content = defaultLayout site (Just page) [shamlet|
   <span class="post-meta">#{ formatPageDate page  }
 <article class="post-content">
   #{ content }
+  <hr>
+  <p>Comments welcome! <a href="https://twitter.com/kaoskorobase">@kaoskorobase
 |]
 
 page :: Site -> Page -> Html -> Html
