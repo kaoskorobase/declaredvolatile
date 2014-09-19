@@ -51,9 +51,7 @@ _head site maybePage = [shamlet|
 
   <meta name="author" content="#{ siteAuthor site }">
   <meta name="keywords" content="#{ unwords (siteKeywords site) }">
-
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"> -->
 
   <!-- CSS -->
   <link rel="stylesheet" href="#{ siteBaseUrl site }/css/basscss.css" type="text/css">
@@ -64,6 +62,9 @@ _head site maybePage = [shamlet|
   <!-- Fonts -->
   <link href="http://fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic" rel="stylesheet" type="text/css">
   <link href="http://fonts.googleapis.com/css?family=Lato:900,300" rel="stylesheet" type="text/css">
+
+  <!-- Atom -->
+  <link href="#{ siteBaseUrl site }/atom.xml" type="application/atom+xml" rel="alternate" title="ATOM Feed" />
 |]
 
 headerLogo = title `above` crop (sine `below` bits)
