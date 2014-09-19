@@ -24,7 +24,7 @@ pre {
 
 
 /* Crop the logo on smaller screens */
-@media screen and (max-width: 40em) {
+@media screen and (max-width: 32em) {
   .logo {
     width: 11em;
     overflow: hidden;
