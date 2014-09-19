@@ -25,10 +25,6 @@ img {
   width: 100%;
 }
 
-ol, ul {
-  margin-left: 1.75em;
-}
-
 .site-wrap {
   min-height: 100%;
   margin-bottom: -100px;
@@ -317,8 +313,8 @@ h6 {
 @media screen and (min-width: 64em) {
   .h1,
   h1 {
-    font-size: 4.05rem;
-    line-height: 5.4rem;
+    font-size: 4.5rem;
+    line-height: 6rem;
   }
 
   .h2,
