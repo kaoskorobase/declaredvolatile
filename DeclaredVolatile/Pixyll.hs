@@ -71,7 +71,7 @@ _header site = [shamlet|
   <div class="mt2 wrap">
     <div class="measure">
       <!-- <a href="#{ siteUrl site }" class="left">#{ siteTitle site }</a> -->
-      <a href="#{ siteUrl site }" class="left">
+      <a href="/" class="left">
         <div .left .logo>
           #{headerLogo}
       <nav class="site-nav right">
