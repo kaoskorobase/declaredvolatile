@@ -4,23 +4,51 @@ import           Control.Applicative hiding ((*>))
 import           Data.List
 import           Data.List.Split
 import           Data.Ord
+import           Data.Time.Clock (UTCTime(..))
+import           Data.Time.Calendar (Day(..))
 import           Data.Time.ISO8601
 import           DeclaredVolatile.BlogPost
+import           DeclaredVolatile.Html
 import           DeclaredVolatile.Layout
+import qualified DeclaredVolatile.Pixyll as Pixyll
 import           Development.Shake
 import           Development.Shake.FilePath
 import           Text.Atom.Feed
 import           Text.Atom.Feed.Export (xmlFeed)
 import           Text.Blaze.Html
+import qualified Text.Blaze.Html5 as H
+import qualified Text.Blaze.Html5.Attributes as H
 import           Text.Blaze.Html.Renderer.String (renderHtml)
 import           Text.Pandoc
 import           Text.XML.Light.Output (ppTopElement)
 
 hsDeps :: Action [FilePath]
-hsDeps = return ["AsciiArt.hs", "Index.hs", "Rot13.hs"]
+hsDeps = do
+  hs <- getDirectoryFiles "" ["DeclaredVolatile//*.hs"]
+  return $ ["declaredvolatile.hs"] ++ hs
 
 cssDeps :: Action [FilePath]
 cssDeps = map ("build" </>) <$> getDirectoryFiles "" ["css/*.css"]
+
+site = Pixyll.Site {
+    Pixyll.siteTitle = "declared volatile"
+  , Pixyll.siteTagline = ""
+  , Pixyll.siteDescription = ""
+  , Pixyll.siteUrl = ""
+  , Pixyll.siteBaseUrl = ""
+  , Pixyll.siteAuthor = "Kaos Korobase"
+  , Pixyll.siteMenu = [ encodeLink "Email" "mailto:kaoskorobase@gmail.com"
+                      , H.a H.! H.href (H.toValue "https://twitter.com/kaoskorobase") $ H.toHtml "Twitter"
+                      , H.a H.! H.href (H.toValue "https://github.com/kaoskorobase") $ H.toHtml "Github" ]
+  }
+
+postToPage :: BlogPost -> Pixyll.Page
+postToPage post = Pixyll.Page {
+    Pixyll.pageTitle = postTitle post
+  , Pixyll.pageDate = postDate post
+  , Pixyll.pageSummary = ""
+  , Pixyll.pageUrl = postUrl post
+  }
 
 main :: IO ()
 main = shakeArgs shakeOptions { shakeFiles = "build/" } $ do
@@ -56,7 +84,11 @@ main = shakeArgs shakeOptions { shakeFiles = "build/" } $ do
     css <- cssDeps
     need $ hs ++ css
     let src = (<.>".md") . dropDirectory1 . takeDirectory $ out
-    getPost src >>= writeFile' out . renderHtml . post "../.."
+    post <- getPost src
+    writeFile' out
+      . renderHtml
+      . Pixyll.post site (postToPage post)
+      $ postHtml post
 
   build "atom.xml" *> \out -> do
     posts <- getPosts ()
@@ -85,8 +117,10 @@ main = shakeArgs shakeOptions { shakeFiles = "build/" } $ do
            ++ map (combine "build" . flip combine "index.html" . postUrl) posts
            ++ [build "atom.xml"]
     writeFile' out
-      . renderHtml . index ""
+      . renderHtml
+      . Pixyll.index site
       -- Sort posts latest first
+      . map postToPage
       . sortBy (\a b -> compare (Down (postDate a)) (Down (postDate b)))
       $ posts
 

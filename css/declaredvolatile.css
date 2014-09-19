@@ -1,0 +1,32 @@
+@import url(http://fonts.googleapis.com/css?family=Cutive+Mono);
+
+pre {
+  overflow-x: auto;
+}
+
+/* Logo */
+
+.logo {
+  /* Monospace font that goes well with a serif font */
+  font-family: "Cutive Mono";
+  font-size: 1.1em;
+  color: #666;
+  white-space: pre;
+}
+
+.logo span.curve {
+  color: #CC0000;
+}
+
+.logo span.digit {
+  color: #e87830;
+}
+
+
+/* Crop the logo on smaller screens */
+@media screen and (max-width: 40em) {
+  .logo {
+    width: 11em;
+    overflow: hidden;
+  }
+}
