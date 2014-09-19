@@ -1,5 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
-module DeclaredVolatile.Logo.AsciiArt where
+module DeclaredVolatile.Logo.AsciiArt (
+  Image, image, above, below, crop,
+  logo, axes, sine, bits
+) where
 
 import qualified Data.List as L
 import           Text.Blaze (ToMarkup(..))
@@ -121,3 +124,13 @@ above (Image as) (Image bs) = Image $ go as bs
 
 below :: Image a -> Image a -> Image a
 below a b = above b a
+
+crop :: Image a -> Image a
+crop = Image . crop_x . crop_y . pixels
+  where
+    crop_y = L.takeWhile (any (not.isTransparent)) . L.dropWhile (all isTransparent)
+    leading = length . L.takeWhile isTransparent
+    crop_x xs = let n = foldl (\a -> min a . leading)
+                              (maximum . map length $ xs)
+                              xs
+                in map (drop n) xs
