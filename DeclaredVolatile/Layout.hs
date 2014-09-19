@@ -6,24 +6,14 @@ module DeclaredVolatile.Layout (index, post) where
 import           Data.Time
 import           Data.Time.Format
 import           DeclaredVolatile.BlogPost
+import           DeclaredVolatile.Html (encodeLink)
 import qualified DeclaredVolatile.Logo.AsciiArt as AsciiArt
 import           DeclaredVolatile.Rot13 (rot13)
 import           Development.Shake.FilePath
 import           System.Locale (defaultTimeLocale)
 import           Text.Blaze.Html (Html)
-import qualified Text.Blaze.Html as H
-import           Text.Blaze.Html.Renderer.String (renderHtml)
 import           Text.Hamlet (shamlet)
 import           Text.Lucius (Css, lucius, renderCss)
-import           Text.Pandoc
-
-
-encodeLink :: String -> String -> H.Markup
-encodeLink name href = H.preEscapedToHtml $
-    "<script>document.write("
-      ++ show (map rot13 ("<a href=\"" ++ href ++ "\">" ++ name ++ "</a>"))
-      ++ ".replace(/[a-zA-Z]/g,function(c){return String.fromCharCode((c<=\"Z\"?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26);}));"
-      ++ "</script>"
 
 layout :: String -> Html -> Html
 layout baseUrl content = [shamlet|
