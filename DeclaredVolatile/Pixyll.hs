@@ -18,7 +18,6 @@ import qualified Text.Blaze.Html5 as H
 
 data Site = Site {
     siteTitle :: String
-  , siteTagline :: String
   , siteDescription :: String
   , siteUrl :: String
   , siteBaseUrl :: String

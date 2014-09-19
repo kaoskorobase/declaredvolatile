@@ -32,7 +32,6 @@ cssDeps = map ("build" </>) <$> getDirectoryFiles "" ["css/*.css"]
 
 site = Pixyll.Site {
     Pixyll.siteTitle = "declared volatile"
-  , Pixyll.siteTagline = ""
   , Pixyll.siteDescription = ""
   , Pixyll.siteUrl = ""
   , Pixyll.siteBaseUrl = ""
