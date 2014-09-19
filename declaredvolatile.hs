@@ -38,7 +38,8 @@ site = Pixyll.Site {
   , Pixyll.siteKeywords = words "stefan kersten kaos korobase sex drugs rock'n roll"
   , Pixyll.siteMenu = [ encodeLink "Email" "mailto:kaoskorobase@gmail.com"
                       , H.a H.! H.href (H.toValue "https://twitter.com/kaoskorobase") $ H.toHtml "Twitter"
-                      , H.a H.! H.href (H.toValue "https://github.com/kaoskorobase") $ H.toHtml "Github" ]
+                      , H.a H.! H.href (H.toValue "https://github.com/kaoskorobase") $ H.toHtml "Github"
+                      , H.a H.! H.href (H.toValue "http://samplecount.com") $ H.toHtml "Work" ]
   }
 
 postToPage :: BlogPost -> Pixyll.Page
