@@ -3,7 +3,7 @@ version:             0.1.0.0
 -- synopsis:            
 -- description:         
 homepage:            http://space.k-hornz.de
-license:             BSD-3
+license:             BSD3
 license-file:        LICENSE.txt
 author:              Stefan Kersten
 maintainer:          kaoskorobase@gmail.com
