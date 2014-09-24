@@ -145,7 +145,7 @@ post site page content = defaultLayout site (Just page) [shamlet|
 <article class="post-content">
   #{ content }
   <hr>
-  <p>Comments welcome! <a href="https://twitter.com/kaoskorobase">@kaoskorobase
+  <p>Comments welcome! <a href="https://twitter.com/kaoskorobase">@kaoskorobase</a>
 |]
 
 page :: Site -> Page -> Html -> Html
