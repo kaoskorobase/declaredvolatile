@@ -140,10 +140,10 @@ formatPageDate = date "%b %-d, %Y" . pageDate
 post :: Site -> Page -> Html -> Html
 post site page content = defaultLayout site (Just page) [shamlet|
 <div class="post-header mb2">
-  <h1 class="py2">#{ pageTitle page }
-  <span class="post-meta">#{ formatPageDate page  }
+  <p class="post-meta">#{ formatPageDate page  }
+  <h2>#{ pageTitle page }
 <article class="post-content">
-  #{ content }
+  #{content}
   <hr>
   <p>Comments welcome! <a href="https://twitter.com/kaoskorobase">@kaoskorobase</a>
 |]
@@ -165,7 +165,7 @@ index site posts = defaultLayout site Nothing $ [shamlet|
       <div class="post">
         <a href="#{ siteBaseUrl site }/#{ pageUrl post }" class="post-link">
           <p class="post-meta">#{ formatPageDate post }
-          <h3 class="h2 post-title">#{ pageTitle post }
+          <h2 class="post-title">#{ pageTitle post }
           <p class="post-summary">#{ pageSummary post }
 
   <!-- {% include pagination.html %} -->
