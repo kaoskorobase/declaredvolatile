@@ -108,7 +108,7 @@ build "css/*.css" *> \out ->
 Next, we need to add a rule for building the blog posts referenced from the rule above. We depend again on the same Haskell modules and CSS files and compute the Markdown source file path from the output file path in the build directory. The Markdown source is then rendered using the `post` HTML template:
 
 ~~~~haskell
-build "blog/**/index.html" *> \out -> do
+build "blog/*/index.html" *> \out -> do
   hs <- hsDeps
   css <- cssDeps
   need $ hs ++ css

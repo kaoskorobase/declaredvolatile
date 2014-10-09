@@ -83,7 +83,7 @@ main = shakeArgs shakeOptions { shakeFiles = "build/" } $ do
 
   getPosts <- newCache $ \() -> mapM getPost =<< getDirectoryFiles "" ["blog/*.md"]
 
-  build "blog/**/index.html" *> \out -> do
+  build "blog/*/index.html" *> \out -> do
     hs <- hsDeps
     css <- cssDeps
     need $ hs ++ css
