@@ -132,7 +132,7 @@ build "atom.xml" *> \out -> do
                  . writeAsciiDoc def
                  . postBody $ p
         , entryLinks =
-            [nullLink $ "http://space.k-hornz.de/" ++ postUrl p]
+            [nullLink $ "http://declaredvolatile.org/" ++ postUrl p]
         }
       feed = (nullFeed
                 "tag:declared-volatile.org"

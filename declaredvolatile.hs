@@ -102,7 +102,7 @@ main = shakeArgs shakeOptions { shakeFiles = "build/" } $ do
                     (formatISO8601 . postLastModificationDate $ p))
           {
             entryContent = Just . TextContent . writeAsciiDoc def . postBody $ p
-          , entryLinks = [nullLink $ "http://space.k-hornz.de/" ++ postUrl p]
+          , entryLinks = [nullLink $ "http://declaredvolatile.org/" ++ postUrl p]
           }
         feed = (nullFeed "tag:declared-volatile.org,2014"
                         (TextString "Declared Volatile")
