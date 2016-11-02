@@ -2,7 +2,6 @@ module DeclaredVolatile.BlogPost (BlogPost(..), formatPostDate, postHtml) where
 
 import           Data.Time
 import           Data.Time.Format
-import           System.Locale (defaultTimeLocale)
 import           Text.Blaze.Html (Html)
 import           Text.Pandoc
 

@@ -1,6 +1,5 @@
 module Main where
 
-import           Control.Applicative hiding ((*>))
 import           Data.List
 import           Data.List.Split
 import           Data.Ord
@@ -20,6 +19,7 @@ import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as H
 import           Text.Blaze.Html.Renderer.String (renderHtml)
 import           Text.Pandoc
+import           Text.Pandoc.Error (handleError)
 import           Text.XML.Light.Output (ppTopElement)
 
 hsDeps :: Action [FilePath]
@@ -51,7 +51,8 @@ postToPage post = Pixyll.Page {
   }
 
 copy :: FilePath -> Rules ()
-copy pattern = "build" </> pattern *> \out -> copyFile' (dropDirectory1 out) out
+copy pattern = "build" </> pattern %> \out -> copyFile' (dropDirectory1 out) out
+
 
 main :: IO ()
 main = shakeArgs shakeOptions { shakeFiles = "build/" } $ do
@@ -64,7 +65,7 @@ main = shakeArgs shakeOptions { shakeFiles = "build/" } $ do
   copy "css/*.css"
 
   getPost <- newCache $ \path -> do
-    pandoc@(Pandoc meta _) <- readMarkdown def <$> readFile' path
+    pandoc@(Pandoc meta _) <- handleError . readMarkdown def <$> readFile' path
     Stdout gitDate <- cmd "git log -1 --format=%ci --" [path]
     let -- Convert title from Pandoc metadata to string
         title = writeAsciiDoc def (Pandoc nullMeta [Plain (docTitle meta)])
@@ -83,7 +84,7 @@ main = shakeArgs shakeOptions { shakeFiles = "build/" } $ do
 
   getPosts <- newCache $ \() -> mapM getPost =<< getDirectoryFiles "" ["blog/*.md"]
 
-  build "blog/*/index.html" *> \out -> do
+  build "blog/*/index.html" %> \out -> do
     hs <- hsDeps
     css <- cssDeps
     need $ hs ++ css
@@ -94,7 +95,7 @@ main = shakeArgs shakeOptions { shakeFiles = "build/" } $ do
       . Pixyll.post site (postToPage post)
       $ postHtml post
 
-  build "atom.xml" *> \out -> do
+  build "atom.xml" %> \out -> do
     posts <- getPosts ()
     let mkEntry p =
           (nullEntry (("tag:"++) . takeFileName . postUrl $ p)
@@ -112,7 +113,7 @@ main = shakeArgs shakeOptions { shakeFiles = "build/" } $ do
                 }
     writeFile' out $ ppTopElement $ xmlFeed feed
 
-  build "index.html" *> \out -> do
+  build "index.html" %> \out -> do
     hs <- hsDeps
     css <- cssDeps
     posts <- getPosts ()
@@ -136,7 +137,7 @@ main = shakeArgs shakeOptions { shakeFiles = "build/" } $ do
   -- Install warp web server if needed
   let server = ".cabal-sandbox/bin/warp"
 
-  server *> \_ -> do
+  server %> \_ -> do
     command_ [] "cabal" ["sandbox", "init"]
     command_ [] "cabal" ["install", "-j", "wai-app-static"]
 
@@ -148,3 +149,5 @@ main = shakeArgs shakeOptions { shakeFiles = "build/" } $ do
   phony "deploy" $ do
     needSite
     command_ [Shell] "./deploy.sh" []
+
+  want ["build"]

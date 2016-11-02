@@ -1,7 +1,7 @@
 name:                declaredvolatile
 version:             0.1.0.0
--- synopsis:            
--- description:         
+-- synopsis:
+-- description:
 homepage:            http://declaredvolatile.org
 license:             BSD3
 license-file:        LICENSE.txt
@@ -10,7 +10,7 @@ maintainer:          kaoskorobase@gmail.com
 copyright:           (c) 2014 Stefan Kersten
 category:            Web
 build-type:          Simple
--- extra-source-files:  
+-- extra-source-files:
 cabal-version:       >=1.10
 
 executable declaredvolatile
@@ -22,9 +22,9 @@ executable declaredvolatile
                        DeclaredVolatile.Pixyll
                        DeclaredVolatile.Rot13
   other-extensions:    OverloadedStrings, EmptyDataDecls, NoImplicitPrelude
-  build-depends:       base >=4.7 && <4.8,
-                       blaze-markup >=0.6 && <0.7,
-                       blaze-html >=0.7 && <0.8,
+  build-depends:       base >= 4.9,
+                       blaze-markup >=0.6,
+                       blaze-html >=0.7,
                        feed,
                        iso8601-time,
                        old-locale,
@@ -35,5 +35,5 @@ executable declaredvolatile
                        text >= 1.1,
                        time,
                        xml
-  -- hs-source-dirs:      
+  -- hs-source-dirs:
   default-language:    Haskell2010
