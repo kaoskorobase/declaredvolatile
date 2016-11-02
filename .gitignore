@@ -1,4 +1,4 @@
 build/
-.cabal-sandbox/
 dist/
 deploy.sh
+.stack-work/
