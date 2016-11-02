@@ -54,17 +54,17 @@ _head site maybePage = [shamlet|
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="#{ siteBaseUrl site }/css/basscss.css" type="text/css">
-  <link rel="stylesheet" href="#{ siteBaseUrl site }/css/pixyll.css" type="text/css">
-  <link rel="stylesheet" href="#{ siteBaseUrl site }/css/pandoc-solarized.css" type="text/css">
-  <link rel="stylesheet" href="#{ siteBaseUrl site }/css/declaredvolatile.css" type="text/css">
+  <link rel="stylesheet" href="css/basscss.css" type="text/css">
+  <link rel="stylesheet" href="css/pixyll.css" type="text/css">
+  <link rel="stylesheet" href="css/pandoc-solarized.css" type="text/css">
+  <link rel="stylesheet" href="css/declaredvolatile.css" type="text/css">
 
   <!-- Fonts -->
   <link href="http://fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic" rel="stylesheet" type="text/css">
   <link href="http://fonts.googleapis.com/css?family=Lato:900,300" rel="stylesheet" type="text/css">
 
   <!-- Atom -->
-  <link href="#{ siteBaseUrl site }/atom.xml" type="application/atom+xml" rel="alternate" title="ATOM Feed" />
+  <link href="atom.xml" type="application/atom+xml" rel="alternate" title="ATOM Feed" />
 |]
 
 headerLogo = title `above` crop (sine `below` bits)
