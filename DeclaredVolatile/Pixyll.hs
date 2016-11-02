@@ -77,10 +77,11 @@ _header site = [shamlet|
   <div class="mt2 wrap">
     <div class="measure">
       <!-- <a href="#{ siteUrl site }" class="left">#{ siteTitle site }</a> -->
-      <a href="/" class="left">
+      <a href="/">
         <div .left .logo>
           #{headerLogo}
-      <nav class="site-nav right">
+      <div class="clearfix">
+      <nav class="site-nav left">
         $forall item <- siteMenu site
           #{item}
       <div class="clearfix">
