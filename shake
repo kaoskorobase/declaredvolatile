@@ -1,0 +1,5 @@
+#!/bin/sh -e
+
+stack build
+stack exec declaredvolatile clean
+stack exec declaredvolatile -- "$@"
