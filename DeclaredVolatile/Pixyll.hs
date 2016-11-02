@@ -133,7 +133,9 @@ defaultLayout site page content = [shamlet|
         <div class="measure">
           #{ content }
 
+    <!--
     #{ _footer }
+    -->
 |]
 
 formatPageDate = date "%b %-d, %Y" . pageDate
@@ -161,6 +163,7 @@ page site page content = defaultLayout site (Just page) [shamlet|
 index :: Site -> [Page] -> Html
 index site posts = defaultLayout site Nothing $ [shamlet|
 <div class="home">
+  <!--
   <div class="posts">
     $forall post <- posts
       <div class="post">
@@ -168,6 +171,7 @@ index site posts = defaultLayout site Nothing $ [shamlet|
           <p class="post-meta">#{ formatPageDate post }
           <h2 class="post-title">#{ pageTitle post }
           <p class="post-summary">#{ pageSummary post }
+  -->
 
   <!-- {% include pagination.html %} -->
 
